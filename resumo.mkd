@@ -1,0 +1,89 @@
+# 🏠 Análise do Mercado Imobiliário Brasileiro (2015-2025)
+### Impactos de crises, governos e eventos regionais no setor imobiliário
+
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![Pandas](https://img.shields.io/badge/Pandas-2.0+-green.svg)](https://pandas.pydata.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Data Science](https://img.shields.io/badge/Data-Science-red.svg)]()
+
+---
+
+## 📋 Índice
+- [Visão Geral do Projeto](#visão-geral-do-projeto)
+- [Dataset](#dataset)
+- [Estrutura dos Dados](#estrutura-dos-dados)
+- [Principais Insights](#principais-insights)
+- [Como Reproduzir](#como-reproduzir)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Próximos Passos](#próximos-passos)
+- [Como Contribuir](#como-contribuir)
+- [Licença](#licença)
+
+---
+
+## 🎯 Visão Geral do Projeto
+
+Este projeto analisa o comportamento do mercado imobiliário brasileiro durante **11 anos** (2015-2025), abrangendo **4 governos diferentes** e eventos históricos como:
+
+- 🔴 Crise econômica de 2015-2018 (Governos Dilma/Temer)
+- 🦠 Pandemia de COVID-19 e seus efeitos no mercado (Governo Bolsonaro)
+- 🌊 Enchente no Rio Grande do Sul (2024)
+- 🚀 Boom migratório em Santa Catarina (2022-2025)
+- 📈 Programas habitacionais (Minha Casa Minha Vida)
+
+### 🗺️ Cobertura Geográfica
+11 unidades federativas representando todas as regiões do Brasil:
+
+| Região | Estados | Destaque |
+|--------|---------|----------|
+| 🟢 Sudeste | SP, RJ, MG | Maior mercado e maior violência |
+| 🔵 Nordeste | CE, BA | Contraste de desenvolvimento |
+| 🟡 Sul | RS, SC | Enchente e boom migratório |
+| 🟠 Centro-Oeste | DF, GO | Estabilidade vs crescimento |
+| 🔴 Norte | AM | Isolamento geográfico |
+
+---
+
+## 📊 Dataset
+
+### Dimensões
+- **Período:** Janeiro/2015 a Dezembro/2025 (132 meses)
+- **Estados:** 11 UFs + DF
+- **Registros:** 1.452 (11 UFs × 132 meses)
+- **Variáveis:** 20+ indicadores imobiliários
+
+### Indicadores Coletados
+
+#### 🏘️ Preços e Transações
+- Preço médio do imóvel (R$)
+- Índice de aluguel (variação anual)
+- Volume de vendas por 10k habitantes
+- Composição das compras (à vista, financiamento, MCMV)
+
+#### 📉 Indicadores de Crise
+- Taxa de inadimplência no aluguel
+- Abandono de imóveis (violência, desastres, vontade própria)
+- Taxa de ocupação residencial
+
+#### 🌱 Indicadores de Crescimento
+- Aumento de moradores (migração)
+- Compra de terrenos para construção
+- Pessoas que alugam/vendem próprio imóvel
+
+#### ⚠️ Indicadores Sociais
+- Invasão de terrenos/favelização
+- Qualidade de vida (score 0-10)
+
+---
+
+## 🔬 Estrutura dos Dados
+
+```python
+# Exemplo do DataFrame final
+df.head()
+
+   data        uf  governo    preco_medio_imovel  tx_ocupacao_%  inadimplencia_%
+0  2015-01     CE    Dilma              340000           91.2              3.8
+1  2015-01     RJ    Dilma              470000           89.5              6.8
+2  2024-05     RS     Lula              348500           78.3             13.2
+3  2024-12     SC     Lula              558000           94.8              3.1
