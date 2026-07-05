@@ -169,3 +169,79 @@ plt.suptitle('Modelo 1: Previsão de Preços dos Imóveis',
 plt.tight_layout()
 plt.savefig('../outputs/graficos/modelo_precos_resultados.png', dpi=300, bbox_inches='tight')
 plt.show()
+
+# ============================================
+# 4. MODELO 2: PREVISÃO DE INADIMPLÊNCIA
+# ============================================
+print("\n" + "="*80)
+print("📊 MODELO 2: PREVISÃO DE INADIMPLÊNCIA")
+print("="*80)
+
+# Preparar dados
+X2 = df_ml[feature_cols]
+y2 = df_ml['inadimplencia_aluguel_%']
+
+X2_train, X2_test, y2_train, y2_test = train_test_split(
+    X2, y2, test_size=0.2, random_state=42
+)
+
+print(f"📊 Dados preparados:")
+print(f"   Treino: {X2_train.shape[0]} registros")
+print(f"   Teste: {X2_test.shape[0]} registros")
+
+# Random Forest para Inadimplência
+print("\n🟢 Treinando Random Forest para Inadimplência...")
+rf2 = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
+rf2.fit(X2_train, y2_train)
+y2_pred = rf2.predict(X2_test)
+
+mae2 = mean_absolute_error(y2_test, y2_pred)
+rmse2 = np.sqrt(mean_squared_error(y2_test, y2_pred))
+r2_2 = r2_score(y2_test, y2_pred)
+
+print(f"   MAE: {mae2:.4f}%")
+print(f"   RMSE: {rmse2:.4f}%")
+print(f"   R²: {r2_2:.4f}")
+
+# Feature Importance
+importance2 = pd.DataFrame({
+    'feature': feature_cols,
+    'importancia': rf2.feature_importances_
+}).sort_values('importancia', ascending=False)
+
+print("\n📈 Top 10 features para prever inadimplência:")
+print(importance2.head(10))
+
+# Visualização
+fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+
+# Gráfico 1: Real vs Predito
+axes[0].scatter(y2_test, y2_pred, alpha=0.5, color='orange')
+axes[0].plot([y2_test.min(), y2_test.max()], [y2_test.min(), y2_test.max()], 
+             'r--', linewidth=2)
+axes[0].set_xlabel('Inadimplência Real (%)', fontsize=12)
+axes[0].set_ylabel('Inadimplência Predita (%)', fontsize=12)
+axes[0].set_title(f'Random Forest - R² = {r2_2:.4f}', fontweight='bold')
+axes[0].grid(True, alpha=0.3)
+
+# Gráfico 2: Distribuição dos Erros
+erros2 = y2_test - y2_pred
+axes[1].hist(erros2, bins=30, color='orange', alpha=0.7, edgecolor='black')
+axes[1].axvline(0, color='red', linestyle='--', linewidth=2)
+axes[1].set_xlabel('Erro (%)', fontsize=12)
+axes[1].set_ylabel('Frequência', fontsize=12)
+axes[1].set_title('Distribuição dos Erros', fontweight='bold')
+axes[1].grid(True, alpha=0.3)
+
+# Gráfico 3: Feature Importance
+top_features2 = importance2.head(10)
+axes[2].barh(top_features2['feature'], top_features2['importancia'], color='orange')
+axes[2].set_xlabel('Importância', fontsize=12)
+axes[2].set_title('Top 10 Features - Inadimplência', fontweight='bold')
+axes[2].grid(True, alpha=0.3)
+
+plt.suptitle('Modelo 2: Previsão de Inadimplência', 
+             fontsize=16, fontweight='bold')
+plt.tight_layout()
+plt.savefig('../outputs/graficos/modelo_inadimplencia_resultados.png', dpi=300, bbox_inches='tight')
+plt.show()
