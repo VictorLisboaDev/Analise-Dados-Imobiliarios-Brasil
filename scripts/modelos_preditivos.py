@@ -245,3 +245,104 @@ plt.suptitle('Modelo 2: Previsão de Inadimplência',
 plt.tight_layout()
 plt.savefig('../outputs/graficos/modelo_inadimplencia_resultados.png', dpi=300, bbox_inches='tight')
 plt.show()
+
+# ============================================
+# 5. MODELO 3: CLASSIFICAÇÃO DE SAÚDE DO MERCADO
+# ============================================
+print("\n" + "="*80)
+print("📊 MODELO 3: CLASSIFICAÇÃO DA SAÚDE DO MERCADO")
+print("="*80)
+
+# Criar variável alvo (classificação)
+df_ml['saude_categoria'] = pd.cut(
+    df_ml['saude_mercado'],
+    bins=[0, 50, 70, 100],
+    labels=['Crítico', 'Estável', 'Saudável']
+)
+
+print("\n📊 Distribuição das categorias:")
+print(df_ml['saude_categoria'].value_counts())
+print("\nPercentuais:")
+print(df_ml['saude_categoria'].value_counts(normalize=True) * 100)
+
+# Preparar dados
+X3 = df_ml[feature_cols]
+y3 = df_ml['saude_categoria']
+
+# Codificar target
+le_target = LabelEncoder()
+y3_encoded = le_target.fit_transform(y3)
+
+# Dividir treino/teste
+X3_train, X3_test, y3_train, y3_test = train_test_split(
+    X3, y3_encoded, test_size=0.2, random_state=42, stratify=y3_encoded
+)
+
+print(f"\n📊 Dados preparados:")
+print(f"   Treino: {X3_train.shape[0]} registros")
+print(f"   Teste: {X3_test.shape[0]} registros")
+print(f"   Classes: {le_target.classes_}")
+
+# Random Forest Classifier
+print("\n🟢 Treinando Random Forest Classifier...")
+rf3 = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
+rf3.fit(X3_train, y3_train)
+y3_pred = rf3.predict(X3_test)
+
+# Métricas
+print("\n📊 Relatório de Classificação:")
+print(classification_report(y3_test, y3_pred, target_names=le_target.classes_))
+
+accuracy = accuracy_score(y3_test, y3_pred)
+print(f"\n✅ Acurácia: {accuracy:.4f}")
+
+# Matriz de Confusão
+cm = confusion_matrix(y3_test, y3_pred)
+print("\n📊 Matriz de Confusão:")
+print(cm)
+
+# Feature Importance
+importance3 = pd.DataFrame({
+    'feature': feature_cols,
+    'importancia': rf3.feature_importances_
+}).sort_values('importancia', ascending=False)
+
+print("\n📈 Top 10 features para classificação:")
+print(importance3.head(10))
+
+# Visualização
+fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+
+# Matriz de Confusão
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=axes[0],
+            xticklabels=le_target.classes_, yticklabels=le_target.classes_)
+axes[0].set_title('Matriz de Confusão', fontweight='bold')
+axes[0].set_ylabel('Real', fontsize=12)
+axes[0].set_xlabel('Predito', fontsize=12)
+
+# Feature Importance
+top_features3 = importance3.head(10)
+axes[1].barh(top_features3['feature'], top_features3['importancia'], color='blue')
+axes[1].set_xlabel('Importância', fontsize=12)
+axes[1].set_title('Top 10 Features - Classificação', fontweight='bold')
+axes[1].grid(True, alpha=0.3)
+
+# Distribuição das previsões
+# Previsões por categoria
+pred_df = pd.DataFrame({
+    'Real': le_target.inverse_transform(y3_test),
+    'Predito': le_target.inverse_transform(y3_pred)
+})
+pred_counts = pred_df.groupby(['Real', 'Predito']).size().unstack(fill_value=0)
+pred_counts.plot(kind='bar', ax=axes[2], stacked=True)
+axes[2].set_title('Distribuição das Previsões por Categoria', fontweight='bold')
+axes[2].set_xlabel('Categoria Real', fontsize=12)
+axes[2].set_ylabel('Quantidade', fontsize=12)
+axes[2].legend(title='Predito')
+axes[2].grid(True, alpha=0.3)
+
+plt.suptitle(f'Modelo 3: Classificação da Saúde do Mercado (Acurácia: {accuracy:.2%})', 
+             fontsize=16, fontweight='bold')
+plt.tight_layout()
+plt.savefig('../outputs/graficos/modelo_classificacao_resultados.png', dpi=300, bbox_inches='tight')
+plt.show()
