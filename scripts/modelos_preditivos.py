@@ -346,3 +346,23 @@ plt.suptitle(f'Modelo 3: Classificação da Saúde do Mercado (Acurácia: {accur
 plt.tight_layout()
 plt.savefig('../outputs/graficos/modelo_classificacao_resultados.png', dpi=300, bbox_inches='tight')
 plt.show()
+
+# ============================================
+# 6. COMPARAÇÃO DE MODELOS
+# ============================================
+print("\n" + "="*80)
+print("📊 COMPARAÇÃO DE MODELOS")
+print("="*80)
+
+resumo_modelos = pd.DataFrame({
+    'Modelo': ['Preço (Linear)', 'Preço (RF)', 'Inadimplência (RF)', 'Classificação (RF)'],
+    'Tipo': ['Regressão', 'Regressão', 'Regressão', 'Classificação'],
+    'R²/Acurácia': [r2_lr, r2_rf, r2_2, accuracy],
+    'MAE/RMSE': [f'R${mae_lr:,.0f}', f'R${mae_rf:,.0f}', f'{mae2:.3f}%', f'{accuracy:.3f}'],
+})
+
+print(resumo_modelos.to_string(index=False))
+
+# Salvar resultados
+resumo_modelos.to_csv('../outputs/modelos/resumo_modelos.csv', index=False)
+print("\n✅ Resumo salvo em: outputs/modelos/resumo_modelos.csv")
