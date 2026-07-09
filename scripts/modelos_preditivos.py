@@ -366,3 +366,21 @@ print(resumo_modelos.to_string(index=False))
 # Salvar resultados
 resumo_modelos.to_csv('../outputs/modelos/resumo_modelos.csv', index=False)
 print("\n✅ Resumo salvo em: outputs/modelos/resumo_modelos.csv")
+
+# ============================================
+# 7. SALVAR MODELOS TREINADOS
+# ============================================
+print("\n💾 7. Salvando modelos...")
+
+import joblib
+
+# Salvar modelos
+joblib.dump(rf, '../outputs/modelos/modelo_precos_rf.pkl')
+joblib.dump(rf2, '../outputs/modelos/modelo_inadimplencia_rf.pkl')
+joblib.dump(rf3, '../outputs/modelos/modelo_classificacao_rf.pkl')
+joblib.dump(scaler, '../outputs/modelos/scaler.pkl')
+joblib.dump(le_uf, '../outputs/modelos/le_uf.pkl')
+joblib.dump(le_governo, '../outputs/modelos/le_governo.pkl')
+joblib.dump(le_target, '../outputs/modelos/le_target.pkl')
+
+print("✅ Modelos salvos em: outputs/modelos/")
