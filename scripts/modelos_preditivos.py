@@ -384,3 +384,45 @@ joblib.dump(le_governo, '../outputs/modelos/le_governo.pkl')
 joblib.dump(le_target, '../outputs/modelos/le_target.pkl')
 
 print("✅ Modelos salvos em: outputs/modelos/")
+
+# ============================================
+# 8. RELATÓRIO FINAL
+# ============================================
+print("\n" + "="*80)
+print("📊 RELATÓRIO FINAL - MODELOS PREDITIVOS")
+print("="*80)
+
+print(f"""
+✅ 4 MODELOS PREDITIVOS CRIADOS!
+
+📊 RESULTADOS:
+
+1️⃣ Previsão de Preços
+   • Melhor modelo: {'Random Forest' if r2_rf > r2_lr else 'Regressão Linear'}
+   • R²: {max(r2_rf, r2_lr):.4f}
+   • MAE: R${min(mae_rf, mae_lr):,.2f}
+
+2️⃣ Previsão de Inadimplência
+   • Modelo: Random Forest
+   • R²: {r2_2:.4f}
+   • MAE: {mae2:.3f}%
+
+3️⃣ Classificação da Saúde do Mercado
+   • Modelo: Random Forest
+   • Acurácia: {accuracy:.2%}
+   • Classes: Crítico, Estável, Saudável
+
+📁 ARQUIVOS GERADOS:
+   • outputs/graficos/modelo_precos_resultados.png
+   • outputs/graficos/modelo_inadimplencia_resultados.png
+   • outputs/graficos/modelo_classificacao_resultados.png
+   • outputs/modelos/resumo_modelos.csv
+   • outputs/modelos/*.pkl (modelos salvos)
+
+🚀 PRÓXIMOS PASSOS:
+   • Executar 05_previsoes_prophet.py para previsões de tendência
+   • Carregar modelos salvos para fazer previsões em produção
+   • Criar API com Flask para servir os modelos
+""")
+
+print("✅ FASE 4 CONCLUÍDA!")
