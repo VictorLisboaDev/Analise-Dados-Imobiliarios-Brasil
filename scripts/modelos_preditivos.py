@@ -18,8 +18,8 @@ from sklearn.metrics import (
 
 # Criar diretórios
 import os
-os.makedirs('../outputs/graficos', exist_ok=True)
-os.makedirs('../outputs/modelos', exist_ok=True)
+os.makedirs('outputs/graficos', exist_ok=True)
+os.makedirs('outputs/modelos', exist_ok=True)
 
 print("="*80)
 print("🤖 PROJETO IMOBILIÁRIO BRASIL - MODELOS PREDITIVOS")
@@ -29,7 +29,7 @@ print("="*80)
 # 1. CARREGAR DADOS
 # ============================================
 print("\n📂 1. Carregando dados...")
-df = pd.read_csv('../outputs/dados_tratados.csv')
+df = pd.read_csv('outputs/dados_tratados.csv')
 df['data'] = pd.to_datetime(df['data'])
 
 print(f"✅ Dados carregados: {len(df)} registros")
@@ -167,7 +167,7 @@ axes[2].grid(True, alpha=0.3)
 plt.suptitle('Modelo 1: Previsão de Preços dos Imóveis', 
              fontsize=16, fontweight='bold')
 plt.tight_layout()
-plt.savefig('../outputs/graficos/modelo_precos_resultados.png', dpi=300, bbox_inches='tight')
+plt.savefig('outputs/graficos/modelo_precos_resultados.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 # ============================================
@@ -243,7 +243,7 @@ axes[2].grid(True, alpha=0.3)
 plt.suptitle('Modelo 2: Previsão de Inadimplência', 
              fontsize=16, fontweight='bold')
 plt.tight_layout()
-plt.savefig('../outputs/graficos/modelo_inadimplencia_resultados.png', dpi=300, bbox_inches='tight')
+plt.savefig('outputs/graficos/modelo_inadimplencia_resultados.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 # ============================================
@@ -344,7 +344,7 @@ axes[2].grid(True, alpha=0.3)
 plt.suptitle(f'Modelo 3: Classificação da Saúde do Mercado (Acurácia: {accuracy:.2%})', 
              fontsize=16, fontweight='bold')
 plt.tight_layout()
-plt.savefig('../outputs/graficos/modelo_classificacao_resultados.png', dpi=300, bbox_inches='tight')
+plt.savefig('outputs/graficos/modelo_classificacao_resultados.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 # ============================================
@@ -364,7 +364,7 @@ resumo_modelos = pd.DataFrame({
 print(resumo_modelos.to_string(index=False))
 
 # Salvar resultados
-resumo_modelos.to_csv('../outputs/modelos/resumo_modelos.csv', index=False)
+resumo_modelos.to_csv('outputs/modelos/resumo_modelos.csv', index=False)
 print("\n✅ Resumo salvo em: outputs/modelos/resumo_modelos.csv")
 
 # ============================================
@@ -375,13 +375,13 @@ print("\n💾 7. Salvando modelos...")
 import joblib
 
 # Salvar modelos
-joblib.dump(rf, '../outputs/modelos/modelo_precos_rf.pkl')
-joblib.dump(rf2, '../outputs/modelos/modelo_inadimplencia_rf.pkl')
-joblib.dump(rf3, '../outputs/modelos/modelo_classificacao_rf.pkl')
-joblib.dump(scaler, '../outputs/modelos/scaler.pkl')
-joblib.dump(le_uf, '../outputs/modelos/le_uf.pkl')
-joblib.dump(le_governo, '../outputs/modelos/le_governo.pkl')
-joblib.dump(le_target, '../outputs/modelos/le_target.pkl')
+joblib.dump(rf, 'outputs/modelos/modelo_precos_rf.pkl')
+joblib.dump(rf2, 'outputs/modelos/modelo_inadimplencia_rf.pkl')
+joblib.dump(rf3, 'outputs/modelos/modelo_classificacao_rf.pkl')
+joblib.dump(scaler, 'outputs/modelos/scaler.pkl')
+joblib.dump(le_uf, 'outputs/modelos/le_uf.pkl')
+joblib.dump(le_governo, 'outputs/modelos/le_governo.pkl')
+joblib.dump(le_target, 'outputs/modelos/le_target.pkl')
 
 print("✅ Modelos salvos em: outputs/modelos/")
 
