@@ -48,3 +48,31 @@ dados_prophet = {}
 for uf in ufs_previsao:
     dados_prophet[uf] = preparar_prophet(uf, df)
     print(f"   {uf}: {len(dados_prophet[uf])} registros")
+
+    # ============================================
+# 3. TREINAR MODELOS
+# ============================================
+print("\n🔄 3. Treinando modelos Prophet...")
+
+modelos = {}
+previsoes = {}
+
+for uf in ufs_previsao:
+    print(f"\n   📊 Treinando Prophet para {uf}...")
+    
+    # Criar e treinar modelo
+    modelo = Prophet(
+        yearly_seasonality=True,
+        weekly_seasonality=False,
+        daily_seasonality=False,
+        seasonality_mode='multiplicative'
+    )
+    modelo.fit(dados_prophet[uf])
+    modelos[uf] = modelo
+    
+    # Gerar previsões para 2026 (12 meses)
+    future = modelo.make_future_dataframe(periods=12, freq='MS')
+    forecast = modelo.predict(future)
+    previsoes[uf] = forecast
+    
+    print(f"   ✅ {uf} treinado com sucesso!")
