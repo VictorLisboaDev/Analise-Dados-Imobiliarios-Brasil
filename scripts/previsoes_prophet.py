@@ -76,3 +76,46 @@ for uf in ufs_previsao:
     previsoes[uf] = forecast
     
     print(f"   ✅ {uf} treinado com sucesso!")
+
+# ============================================
+# 4. VISUALIZAR PREVISÕES
+# ============================================
+print("\n📊 4. Visualizando previsões...")
+
+# Criar figura com subplots
+fig, axes = plt.subplots(2, 2, figsize=(16, 10))
+axes = axes.flatten()
+
+for idx, uf in enumerate(ufs_previsao):
+    ax = axes[idx]
+    
+    # Dados históricos
+    dados_uf = dados_prophet[uf]
+    ax.scatter(dados_uf['ds'], dados_uf['y'], alpha=0.3, color='gray', label='Histórico')
+    
+    # Previsões
+    forecast = previsoes[uf]
+    ax.plot(forecast['ds'], forecast['yhat'], color='blue', linewidth=2, label='Previsão')
+    ax.fill_between(
+        forecast['ds'],
+        forecast['yhat_lower'],
+        forecast['yhat_upper'],
+        color='blue', alpha=0.2, label='Intervalo de Confiança'
+    )
+    
+    # Destacar 2026
+    forecast_2026 = forecast[forecast['ds'] >= '2026-01-01']
+    if not forecast_2026.empty:
+        ax.axvspan('2026-01-01', '2026-12-01', alpha=0.1, color='green', label='2026')
+    
+    ax.set_title(f'{uf} - Previsão de Preços', fontweight='bold', fontsize=14)
+    ax.set_xlabel('Data', fontsize=12)
+    ax.set_ylabel('Preço (R$)', fontsize=12)
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+
+plt.suptitle('Previsões de Preços para 2026 (Prophet)', 
+             fontsize=16, fontweight='bold')
+plt.tight_layout()
+plt.savefig('../outputs/graficos/prophet_previsoes_2026.png', dpi=300, bbox_inches='tight')
+plt.show()
