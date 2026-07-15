@@ -181,3 +181,44 @@ resultados_df.to_csv('../outputs/modelos/previsoes_2026.csv', index=False)
 
 print("\n📊 Resumo das Previsões:")
 print(resultados_df.to_string(index=False))
+
+# ============================================
+# 7. RELATÓRIO FINAL
+# ============================================
+print("\n" + "="*80)
+print("📊 RELATÓRIO FINAL - PREVISÕES PROPHET")
+print("="*80)
+
+print(f"""
+✅ PREVISÕES PARA 2026 CONCLUÍDAS!
+
+📈 DESTAQUES:
+
+1️⃣ Santa Catarina (SC)
+   • Preço médio 2026: R${resultados_df[resultados_df['UF']=='SC']['Preco_2026_medio'].values[0]:,.2f}
+   • Crescimento: {resultados_df[resultados_df['UF']=='SC']['Crescimento_%'].values[0]:.1f}%
+
+2️⃣ Ceará (CE) - Seu estado!
+   • Preço médio 2026: R${resultados_df[resultados_df['UF']=='CE']['Preco_2026_medio'].values[0]:,.2f}
+   • Crescimento: {resultados_df[resultados_df['UF']=='CE']['Crescimento_%'].values[0]:.1f}%
+
+3️⃣ São Paulo (SP)
+   • Preço médio 2026: R${resultados_df[resultados_df['UF']=='SP']['Preco_2026_medio'].values[0]:,.2f}
+   • Crescimento: {resultados_df[resultados_df['UF']=='SP']['Crescimento_%'].values[0]:.1f}%
+
+4️⃣ Rio de Janeiro (RJ)
+   • Preço médio 2026: R${resultados_df[resultados_df['UF']=='RJ']['Preco_2026_medio'].values[0]:,.2f}
+   • Crescimento: {resultados_df[resultados_df['UF']=='RJ']['Crescimento_%'].values[0]:.1f}%
+
+📁 ARQUIVOS GERADOS:
+   • outputs/graficos/prophet_previsoes_2026.png
+   • outputs/graficos/prophet_componentes.png
+   • outputs/modelos/previsoes_2026.csv
+
+🚀 PRÓXIMOS PASSOS:
+   • Integrar com dados reais do FipeZAP
+   • Criar dashboard com Streamlit para visualizar previsões
+   • Adicionar mais UFs ao modelo
+""")
+
+print("✅ MODELO PROPHET CONCLUÍDO!")
